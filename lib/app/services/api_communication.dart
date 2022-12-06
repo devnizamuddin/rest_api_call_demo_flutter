@@ -78,6 +78,41 @@ class ApiCommunication {
     return null;
   }
 
+  Future<Response?> putData(
+      String? urlEndPoint, Map<String, dynamic> data) async {
+    Response? response;
+    debugPrint(urlEndPoint);
+    Map<String, dynamic> header = <String, String>{
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Access-Control-Allow-Origin': '*',
+    };
+    try {
+      response = await _dio.put('$_baseUrl$urlEndPoint',
+          data: data, options: Options(headers: header));
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout) {}
+      if (e.type == DioErrorType.other) {
+        debugPrint(e.message);
+      }
+      if (e.type == DioErrorType.response) {
+        debugPrint(e.message);
+      }
+      if (e.response?.statusCode != null && e.response!.statusCode! > 200) {}
+    } on SocketException catch (e) {
+      debugPrint(e.message);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    if (response != null && response.statusCode == 200) {
+      debugPrint(response.data.toString());
+      return response;
+    } else {
+      debugPrint('${response?.statusCode}');
+    }
+    return null;
+  }
+
   Future<String?> deleteData(String? urlEndPoint) async {
     Response? response;
     debugPrint(urlEndPoint);

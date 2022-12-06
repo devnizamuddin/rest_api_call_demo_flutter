@@ -7,12 +7,16 @@ class UserModel {
   String? first_name;
   String? last_name;
   String? avatar;
+  String? job;
+  String? name;
   UserModel({
     this.id,
     this.email,
     this.first_name,
     this.last_name,
     this.avatar,
+    this.job,
+    this.name,
   });
 
   UserModel copyWith({
@@ -21,6 +25,8 @@ class UserModel {
     String? first_name,
     String? last_name,
     String? avatar,
+    String? job,
+    String? name,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -28,6 +34,8 @@ class UserModel {
       first_name: first_name ?? this.first_name,
       last_name: last_name ?? this.last_name,
       avatar: avatar ?? this.avatar,
+      job: job ?? this.job,
+      name: name ?? this.name,
     );
   }
 
@@ -38,6 +46,8 @@ class UserModel {
       'first_name': first_name,
       'last_name': last_name,
       'avatar': avatar,
+      'job': job,
+      'name': name,
     };
   }
 
@@ -48,6 +58,8 @@ class UserModel {
       first_name: map['first_name'],
       last_name: map['last_name'],
       avatar: map['avatar'],
+      job: map['job'],
+      name: map['name'],
     );
   }
 
@@ -58,6 +70,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, email: $email, first_name: $first_name, last_name: $last_name, avatar: $avatar)';
+    return 'UserModel(id: $id, email: $email, first_name: $first_name, last_name: $last_name, avatar: $avatar,  job: $job,  name: $name)';
   }
 }

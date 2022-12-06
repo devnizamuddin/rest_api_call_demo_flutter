@@ -131,11 +131,117 @@ class UserController extends GetxController {
       "job": _jobController.text
     };
 
-    final response = await _apiCommunication.postData('api/users', mapdata);
+    final response = await _apiCommunication.postData('users', mapdata);
     if (response != null) {
       Map<String, dynamic> mapdata = response.data;
       debugPrint(mapdata.toString());
       successSnack("User Created Successfully");
+    } else {
+      alertSnack('Something went wrong');
+    }
+  }
+
+  onTapUpadteUserDialog(UserModel userModel) {
+    _nameController.clear();
+    _jobController.clear();
+    _nameController.text = userModel.name ?? '';
+    _jobController.text = userModel.job ?? '';
+    Get.dialog(Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: Colors.green,
+            child: const Text(
+              'Update User',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(10),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    hintText: 'Name',
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _jobController,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(10),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    hintText: 'Job',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red)),
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white),
+                        ))),
+                const SizedBox(width: 20),
+                Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.green)),
+                        onPressed: () {
+                          Get.back();
+                          updateUser(userModel.id!);
+                        },
+                        child: const Text('Update',
+                            style: TextStyle(color: Colors.white))))
+              ],
+            ),
+          ),
+        ],
+      ),
+    ));
+  }
+
+  updateUser(int userId) async {
+    Map<String, dynamic> mapdata = {
+      "name": _nameController.text,
+      "job": _jobController.text
+    };
+
+    final response = await _apiCommunication.putData('users/$userId', mapdata);
+    if (response != null) {
+      Map<String, dynamic> mapdata = response.data;
+      debugPrint(mapdata.toString());
+      successSnack("User Updated Successfully");
     } else {
       alertSnack('Something went wrong');
     }

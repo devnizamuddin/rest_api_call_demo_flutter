@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:rest_api_call_demo_flutter/app/modules/user/models/user.dart';
 import 'package:rest_api_call_demo_flutter/app/services/api_communication.dart';
 
+import '../../../utils/snackbar.dart';
+
 class UserController extends GetxController {
   late ApiCommunication _apiCommunication;
 
@@ -21,6 +23,15 @@ class UserController extends GetxController {
       _totalPageCount.value = mapdata['total_pages'];
       userList.addAll(list);
       debugPrint(userList.length.toString());
+    }
+  }
+
+  deleteUser(int id) async {
+    String? message = await _apiCommunication.deleteData('users/$id');
+    if (message != null) {
+      successSnack(message);
+    } else {
+      alertSnack('Something went wrong');
     }
   }
 

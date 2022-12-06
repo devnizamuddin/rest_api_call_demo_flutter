@@ -23,35 +23,39 @@ class UserView extends GetView<UserController> {
               itemBuilder: (BuildContext context, int index) {
                 UserModel userModel = controller.userList[index];
                 return Card(
-                  child: Column(
+                  child: Row(
                     children: [
-                      Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          Expanded(
-                            flex: 1,
-                            child: Image.network(
-                              userModel.avatar ?? '',
-                              height: 104,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(userModel.first_name ?? ''),
-                                  Text(userModel.last_name ?? ''),
-                                  Text(userModel.email ?? ''),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                      const SizedBox(width: 10),
+                      Expanded(
+                        flex: 1,
+                        child: Image.network(
+                          userModel.avatar ?? '',
+                          height: 104,
+                        ),
                       ),
+                      Expanded(
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(userModel.first_name ?? ''),
+                              Text(userModel.last_name ?? ''),
+                              Text(userModel.email ?? ''),
+                            ],
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            controller.deleteUser(userModel.id!);
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ))
                     ],
                   ),
                 );

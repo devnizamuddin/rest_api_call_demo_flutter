@@ -15,7 +15,7 @@ class UserView extends GetView<UserController> {
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: controller.onTapCreateUser,
+          onPressed: controller.onTapCreateUserDialog,
           child: const Icon(Icons.add),
         ),
         body: Padding(

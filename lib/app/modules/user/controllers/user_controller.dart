@@ -37,7 +37,7 @@ class UserController extends GetxController {
     }
   }
 
-  onTapCreateUser() {
+  onTapCreateUserDialog() {
     _nameController.clear();
     _jobController.clear();
     Get.dialog(Dialog(
@@ -111,7 +111,10 @@ class UserController extends GetxController {
                         style: ButtonStyle(
                             backgroundColor:
                                 MaterialStateProperty.all(Colors.green)),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.back();
+                          createUser();
+                        },
                         child: const Text('Create',
                             style: TextStyle(color: Colors.white))))
               ],
@@ -120,6 +123,22 @@ class UserController extends GetxController {
         ],
       ),
     ));
+  }
+
+  createUser() async {
+    Map<String, dynamic> mapdata = {
+      "name": _nameController.text,
+      "job": _jobController.text
+    };
+
+    final response = await _apiCommunication.postData('api/users', mapdata);
+    if (response != null) {
+      Map<String, dynamic> mapdata = response.data;
+      debugPrint(mapdata.toString());
+      successSnack("User Created Successfully");
+    } else {
+      alertSnack('Something went wrong');
+    }
   }
 
   @override

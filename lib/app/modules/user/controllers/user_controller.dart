@@ -12,6 +12,8 @@ class UserController extends GetxController {
   final Rx<int> _currentPageNumber = 1.obs;
   final Rx<int> _totalPageCount = 0.obs;
   late ScrollController scrollController;
+  late TextEditingController _nameController;
+  late TextEditingController _jobController;
 
   getUsers() async {
     final response =
@@ -35,6 +37,91 @@ class UserController extends GetxController {
     }
   }
 
+  onTapCreateUser() {
+    _nameController.clear();
+    _jobController.clear();
+    Get.dialog(Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            color: Colors.green,
+            child: const Text(
+              'Create New User',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(10),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    hintText: 'Name',
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _jobController,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(10),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                    ),
+                    hintText: 'Job',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red)),
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white),
+                        ))),
+                const SizedBox(width: 20),
+                Expanded(
+                    child: TextButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.green)),
+                        onPressed: () {},
+                        child: const Text('Create',
+                            style: TextStyle(color: Colors.white))))
+              ],
+            ),
+          ),
+        ],
+      ),
+    ));
+  }
+
   @override
   void onInit() async {
     _apiCommunication = ApiCommunication();
@@ -46,6 +133,8 @@ class UserController extends GetxController {
         getUsers();
       }
     });
+    _nameController = TextEditingController();
+    _jobController = TextEditingController();
     super.onInit();
   }
 
@@ -53,6 +142,8 @@ class UserController extends GetxController {
   void onClose() {
     _apiCommunication.endConnection();
     scrollController.dispose();
+    _nameController.dispose();
+    _jobController.dispose();
     super.onClose();
   }
 }

@@ -14,6 +14,10 @@ class UserView extends GetView<UserController> {
           title: const Text('User'),
           centerTitle: true,
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: controller.onTapCreateUser,
+          child: const Icon(Icons.add),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(10),
           child: Obx(() {
